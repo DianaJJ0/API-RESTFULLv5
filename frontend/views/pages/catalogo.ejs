@@ -7,6 +7,7 @@
   <body>
     <!-- Contenedor principal para el contenido y footer -->
     <div class="site-container">
+      <!-- Incluye el header del sitio -->
       <%- include('../partials/header') %>
 
       <main class="content-wrap">
@@ -25,11 +26,21 @@
               <% productos.forEach(producto => { %>
                 <article class="product-card">
                   <figure class="product-card__image-container">
-                    <img
-                      src="/img/<%= producto.referencia %>.jpg"
-                      alt="Imagen de <%= producto.nombre %>"
-                      class="product-card__image"
-                    />
+                    <!--
+                      Mostramos la imagen del producto usando la referencia,
+                      que debe coincidir exactamente con el nombre del archivo .jpg en /public/img/
+                      Si quieres una imagen por defecto para productos sin referencia, descomenta la línea comentada.
+                    -->
+                    <% if (producto.referencia) { %>
+                      <img
+                        src="/img/<%= producto.referencia %>.jpg"
+                        alt="Imagen de <%= producto.nombre %>"
+                        class="product-card__image"
+                      />
+                    <% } else { %>
+                      <!-- Imagen por defecto si el producto no tiene referencia -->
+                      <!-- <img src="/img/default.jpg" alt="Imagen no disponible" class="product-card__image" /> -->
+                    <% } %>
                   </figure>
 
                   <div class="product-card__body">
@@ -68,6 +79,7 @@
       </main>
     </div>
 
+    <!-- Incluye el footer del sitio -->
     <%- include('../partials/footer') %>
   </body>
 </html>
