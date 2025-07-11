@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <!-- Incluye el head común con el título de la página -->
+    <%- include('../partials/head', { title: 'Catálogo de Productos | TechStore' }) %>
+  </head>
+  <body>
+    <!-- Contenedor principal para el contenido y footer -->
+    <div class="site-container">
+      <%- include('../partials/header') %>
+
+      <main class="content-wrap">
+        <section class="catalog-container">
+          <header class="catalog-header">
+            <h1>Nuestros Productos</h1>
+            <p>
+              Descubre la última tecnología en nuestra tienda. Calidad y
+              rendimiento garantizados.
+            </p>
+          </header>
+
+          <div class="catalog-grid">
+            <!-- Verifica si hay productos para mostrar -->
+            <% if (productos && productos.length > 0) { %>
+              <% productos.forEach(producto => { %>
+                <article class="product-card">
+                  <figure class="product-card__image-container">
+                    <img
+                      src="/img/<%= producto.referencia %>.jpg"
+                      alt="Imagen de <%= producto.nombre %>"
+                      class="product-card__image"
+                    />
+                  </figure>
+
+                  <div class="product-card__body">
+                    <h2 class="product-card__title"><%= producto.nombre %></h2>
+                    <p class="product-card__description">
+                      <%= producto.descripcion %>
+                    </p>
+                    <p class="product-card__ref">Ref: <%= producto.referencia %></p>
+                    <p class="product-card__price">
+                      $<%= new Intl.NumberFormat('es-CO').format(producto.precio) %>
+                    </p>
+
+                    <!-- Formulario para comprar el producto -->
+                    <form
+                      action="/comprar/<%= producto._id %>"
+                      method="POST"
+                      class="product-card__form"
+                    >
+                      <button
+                        type="submit"
+                        class="btn btn-primary product-card__btn"
+                      >
+                        Comprar Ahora
+                      </button>
+                    </form>
+                  </div>
+                </article>
+              <% }); %>
+            <% } else { %>
+              <div class="no-products-message">
+                <p>No hay productos disponibles para mostrar en este momento.</p>
+              </div>
+            <% } %>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <%- include('../partials/footer') %>
+  </body>
+</html>

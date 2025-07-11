@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <%- include('../partials/head', { title: 'Mi Perfil | TechStore' }) %>
+    <link rel="stylesheet" href="/css/perfil.css">
+</head>
+<body>
+    
+    <div class="site-container">
+        <%- include('../partials/header') %>
+
+        <main class="content-wrap">
+            <section class="profile-container">
+                <header class="profile-header">
+                    <h1>Bienvenido de nuevo, <%= usuario.nombreCompleto.split(' ')[0] %></h1>
+                    <p>Aquí puedes revisar tu información y tu historial de compras.</p>
+                </header>
+
+                <div class="profile-grid">
+                    <!-- Tarjeta con la información del usuario -->
+                    <aside class="profile-info-card">
+                        <h2>Tu Información</h2>
+                        <div class="info-item">
+                            <span class="info-label">Nombre Completo</span>
+                            <span class="info-value"><%= usuario.nombreCompleto %></span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Correo Electrónico</span>
+                            <span class="info-value"><%= usuario.correo %></span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Miembro desde</span>
+                            <span class="info-value"><%= new Date(usuario.createdAt).toLocaleDateString('es-CO', { year: 'numeric', month: 'long', day: 'numeric' }) %></span>
+                        </div>
+                        <!-- Mostramos si es cliente o no -->
+                        <div class="info-item">
+                            <span class="info-label">Status</span>
+                            <span class="info-value"><%= cliente ? 'Cliente Verificado' : 'Usuario' %></span>
+                        </div>
+                        <a href="#" class="btn btn-outline btn-full">Editar Información</a>
+                    </aside>
+
+                    <!-- Sección principal con el historial de compras -->
+                    <section class="purchase-history">
+                        <h2>Historial de Compras</h2>
+                        
+                        <!-- Verificamos si existe un perfil de cliente y si tiene compras -->
+                        <% if (cliente && cliente.historialCompras && cliente.historialCompras.length > 0) { %>
+                            <div class="history-table">
+                                <div class="history-table-header">
+                                    <span>Producto</span>
+                                    <span>Fecha</span>
+                                    <span>Precio Pagado</span>
+                                    <span>Factura</span>
+                                </div>
+                                <!-- Iteramos sobre cliente.historialCompras -->
+                                <% cliente.historialCompras.slice().reverse().forEach(compra => { %>
+                                    <% if (compra.producto) { %>
+                                        <div class="history-table-row">
+                                            <div class="product-cell">
+                                                <img src="/images/<%= compra.producto.referencia %>.jpg" alt="<%= compra.producto.nombre %>" class="product-cell-img">
+                                                <div class="product-cell-info">
+                                                    <span class="product-cell-name"><%= compra.producto.nombre %></span>
+                                                    <span class="product-cell-ref">Ref: <%= compra.producto.referencia %></span>
+                                                </div>
+                                            </div>
+                                            <span class="date-cell"><%= new Date(compra.fechaCompra).toLocaleDateString('es-CO') %></span>
+                                            <span class="price-cell">$<%= new Intl.NumberFormat('es-CO').format(compra.precioCompra) %></span>
+                                            <a href="#" class="btn btn-outline btn-small">Ver</a>
+                                        </div>
+                                    <% } %>
+                                <% }); %>
+                            </div>
+                        <% } else { %>
+                            <div class="no-purchases-message">
+                                <p>Aún no has realizado ninguna compra.</p>
+                                <a href="/catalogo" class="btn btn-primary">Explorar catálogo</a>
+                            </div>
+                        <% } %>
+                        
+                        <% if (error) { %>
+                            <div class="alert alert-error"><p><%= error %></p></div>
+                        <% } %>
+                    </section>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <%- include('../partials/footer') %>
+
+</body>
+</html>

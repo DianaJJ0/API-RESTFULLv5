@@ -1,0 +1,34 @@
+<header class="site-header">
+  <div class="site-header__container">
+    <a href="/" class="site-header__logo">TechStore</a>
+    <nav class="site-header__nav">
+      <!-- Enlaces de navegación -->
+      <a href="/catalogo" class="site-header__link">Catálogo</a>
+      <a href="/" class="site-header__link">Inicio</a>
+      <a href="/catalogo" class="site-header__link">Productos</a>
+      <a href="#" class="site-header__link">Contacto</a>
+    </nav>
+    <div class="site-header__auth">
+      <!-- condicional: ¿Existe la variable 'usuario'? -->
+      <% if (usuario) { %>
+        <!-- Si la variable 'usuario' existe, significa que el usuario ha iniciado sesión -->
+        <img
+          src="/img/usuario.png"
+          alt="Avatar de <%= usuario.nombreCompleto %>"
+          class="site-header__avatar" 
+        />
+        <span class="site-header__username">
+          Hola, <%= usuario.nombreCompleto.split(' ')[0] %>
+        </span> 
+        <a href="/perfil" class="btn btn-outline">Mi Perfil</a>
+        <a href="/auth/logout" class="btn btn-danger">Cerrar Sesión</a>
+        <!-- Este SÍ puede quedar en /auth/logout si tu backend lo maneja así -->
+      <% } else { %>
+        <!-- Si el usuario NO ha iniciado sesión -->
+        <a href="/login" class="btn btn-outline">Iniciar sesión</a>
+        <a href="/register" class="btn btn-primary">Registrarse</a>
+        <!-- Ambos enlaces SIN el prefijo /auth/ -->
+      <% } %>
+    </div>
+  </div>
+</header>

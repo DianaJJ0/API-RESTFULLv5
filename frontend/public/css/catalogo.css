@@ -1,0 +1,140 @@
+/* --- CONTENEDOR Y ENCABEZADO DE LA PÁGINA --- */
+.catalog-container {
+    width: 100%;
+    max-width: var(--content-max-width); 
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+.catalog-header {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.catalog-header h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.catalog-header p {
+    font-size: 1.125rem;
+    color: var(--text-light); 
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+/* --- REJILLA DE PRODUCTOS --- */
+.catalog-grid {
+    display: grid;
+    /* La fórmula para que las tarjetas sean responsive y se ajusten solas */
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 30px;
+    
+    /* --- CAMBIO PARA CENTRAR LAS TARJETAS --- */
+    justify-content: center;
+}
+
+/* --- TARJETA DE PRODUCTO --- */
+.product-card {
+    background-color: var(--card-bg); 
+    border: 1px solid var(--border-color); 
+    border-radius: var(--border-radius); 
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: var(--transition); 
+    max-width: 320px; 
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--hover-shadow); 
+}
+
+.product-card__image-container {
+    width: 100%;
+    height: 220px;
+    background-color: var(--input-bg); 
+    overflow: hidden;
+}
+
+.product-card__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    transition: var(--transition); 
+}
+
+.product-card:hover .product-card__image {
+    transform: scale(1.05);
+}
+
+.product-card__body {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1; 
+}
+
+.product-card__title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: var(--text-secondary);
+}
+
+.product-card__description {
+    font-size: 0.9rem;
+    color: var(--text-light);
+    line-height: 1.5;
+    flex-grow: 1; 
+    margin-bottom: 15px;
+}
+
+.product-card__ref {
+    font-size: 0.8rem;
+    color: var(--text-light);
+    opacity: 0.6; /* Pequeño ajuste para diferenciarlo de la descripción */
+    margin-bottom: 15px;
+}
+
+.product-card__price {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--accent-color);
+    margin-bottom: 20px;
+    text-align: end;
+}
+
+.btn.product-card__btn {
+    width: 100%;
+    padding: 12px;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: var(--btn-radius); 
+    margin-top: auto; 
+    background-color: var(--primary-color);
+    color: var(--text-color);
+}
+
+.btn.product-card__btn:hover {
+    background-color: var(--primary-hover);
+    box-shadow: var(--btn-shadow);
+}
+
+
+/* --- MENSAJE CUANDO NO HAY PRODUCTOS --- */
+.no-products-message {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 50px 20px;
+    background-color: var(--card-bg); 
+    border-radius: var(--border-radius); 
+}
+
+.no-products-message p {
+    font-size: 1.125rem;
+    color: var(--text-light); 
+}

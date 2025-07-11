@@ -1,0 +1,190 @@
+/* --- CONTENEDOR PRINCIPAL DEL PERFIL --- */
+.profile-container {
+    width: 100%;
+    max-width: var(--content-max-width);
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+.profile-header {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.profile-header h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.profile-header p {
+    font-size: 1.125rem;
+    color: var(--text-light);
+}
+
+/* --- REJILLA DEL PERFIL (INFORMACIÓN + HISTORIAL) --- */
+.profile-grid {
+    display: grid;
+    grid-template-columns: 300px 1fr; /* Columna lateral para la info, el resto para el historial */
+    gap: 40px;
+}
+
+/* --- TARJETA DE INFORMACIÓN DEL USUARIO --- */
+.profile-info-card {
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    padding: 25px;
+    height: fit-content; /* Para que la tarjeta no se estire innecesariamente */
+}
+
+.profile-info-card h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 25px;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 15px;
+}
+
+.info-item {
+    margin-bottom: 20px;
+}
+
+.info-label {
+    display: block;
+    font-size: 0.8rem;
+    color: var(--text-light);
+    margin-bottom: 5px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.info-value {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+.profile-info-card .btn {
+    margin-top: 20px;
+}
+
+/* --- SECCIÓN DE HISTORIAL DE COMPRAS --- */
+.purchase-history h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 25px;
+    color: var(--text-secondary);
+}
+
+.history-table {
+    background-color: var(--card-bg);
+    border-radius: var(--border-radius);
+    overflow: hidden;
+}
+
+.history-table-header, .history-table-row {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 0.5fr; /* Columnas para producto, fecha, precio y botón */
+    gap: 20px;
+    padding: 15px 25px;
+    align-items: center;
+}
+
+.history-table-header {
+    color: var(--text-light);
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.history-table-row {
+    border-bottom: 1px solid var(--border-color);
+}
+.history-table-row:last-child {
+    border-bottom: none;
+}
+
+.product-cell {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.product-cell-img {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: var(--btn-radius);
+}
+
+.product-cell-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.product-cell-name {
+    font-weight: 600;
+    color: var(--text-secondary);
+}
+
+.product-cell-ref {
+    font-size: 0.8rem;
+    color: var(--text-light);
+}
+
+.price-cell {
+    font-weight: 600;
+    color: var(--accent-color);
+}
+
+.btn.btn-small {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.8rem;
+}
+
+/* --- MENSAJE CUANDO NO HAY COMPRAS --- */
+.no-purchases-message {
+    background-color: var(--card-bg);
+    border-radius: var(--border-radius);
+    padding: 50px;
+    text-align: center;
+}
+
+.no-purchases-message p {
+    font-size: 1.125rem;
+    color: var(--text-light);
+    margin-bottom: 20px;
+}
+
+/* --- RESPONSIVE DESIGN --- */
+@media (max-width: 992px) {
+    .profile-grid {
+        grid-template-columns: 1fr; /* En pantallas medianas, una columna debajo de la otra */
+    }
+}
+
+@media (max-width: 768px) {
+    .history-table-header {
+        display: none; /* Ocultamos el header en pantallas pequeñas */
+    }
+    
+    .history-table-row {
+        grid-template-columns: 1fr; /* Una sola columna */
+        gap: 10px;
+        text-align: center;
+    }
+    
+    .product-cell {
+        flex-direction: column; /* Centramos la imagen y la info */
+    }
+    
+    .date-cell::before, .price-cell::before {
+        content: attr(data-label); /* Usaríamos data-label si lo añadiéramos al HTML */
+        font-weight: bold;
+        display: block;
+        margin-bottom: 5px;
+        color: var(--text-light);
+    }
+}
