@@ -61,10 +61,19 @@ const realizarCompra = async (req, res) => {
 // ===================     FUNCIÓN PARA DEVOLVER EL PERFIL DEL USUARIO   ================
 const obtenerPerfil = async (req, res) => {
     try {
-        const usuarioId = req.usuario._id;
+        // --- SOPORTE SESIÓN PARA PETICIONES DEL FRONTEND ---
+        let usuario = req.usuario; // Este viene del JWT (middleware protegerRuta)
+        // Si no existe (caso frontend con sesión), intenta usar la sesión del frontend
+        if (!usuario && req.session && req.session.usuario) {
+            // Buscamos el usuario en la base de datos para tener todos los campos
+            usuario = await Usuario.findById(req.session.usuario._id);
+        }
+        if (!usuario) {
+            return res.status(401).json({ mensaje: "No autenticado." });
+        }
 
         // Buscamos el perfil de cliente asociado al usuario logueado.
-        const cliente = await Cliente.findOne({ usuario: usuarioId })
+        const cliente = await Cliente.findOne({ usuario: usuario._id })
             .populate({
                 path: 'historialCompras.producto',
                 model: 'Producto'
@@ -72,7 +81,7 @@ const obtenerPerfil = async (req, res) => {
 
         // Enviamos los datos del usuario y del cliente como JSON.
         res.status(200).json({
-            usuario: req.usuario,
+            usuario: usuario,
             cliente: cliente
         });
 

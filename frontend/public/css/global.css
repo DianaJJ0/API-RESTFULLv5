@@ -459,3 +459,90 @@ button,
     transition: all 0.3s ease;
     overflow: hidden;
 }
+
+/* === AVATAR DE INICIALES Y MENÚ DE USUARIO === */
+/* Avatar circular con iniciales */
+.avatar-circle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--primary-color);
+  color: #fff;
+  font-weight: bold;
+  font-size: 1rem;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  margin-right: 0.5rem;
+  transition: box-shadow 0.2s;
+  user-select: none;
+  border: 2px solid #fff1;
+}
+
+/* Contenedor del menú de usuario */
+.user-menu {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+/* Flecha para mostrar que hay un menú desplegable */
+.dropdown-arrow {
+  font-size: 1.2em;
+  margin-left: 2px;
+  color: #fff;
+  cursor: pointer;
+}
+
+/* Menú desplegable oculto por defecto */
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  top: 48px;
+  right: 0;
+  background: #222;
+  border-radius: 8px;
+  min-width: 170px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+  z-index: 200;
+  flex-direction: column;
+  padding: 10px 0;
+}
+
+.dropdown-menu.show {
+  display: flex;
+}
+
+.dropdown-menu a {
+  color: #fff;
+  padding: 10px 24px;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  font-size: 1em;
+  transition: background 0.2s;
+}
+
+.dropdown-menu a i {
+  margin-right: 8px;
+  font-size: 1.1em;
+}
+
+.dropdown-menu a:hover {
+  background: var(--primary-color);
+}
+
+/* Opcional: Efecto hover en el avatar */
+.avatar-circle:hover {
+  box-shadow: 0 0 0 4px #2979ff44;
+}
+
+/* Responsive: para que el menú no se descuadre */
+@media (max-width: 768px) {
+  .dropdown-menu {
+    right: auto;
+    left: 0;
+    min-width: 140px;
+  }
+}

@@ -26,11 +26,11 @@ app.use(express.json());
 // 2. Configuración y uso del middleware de sesiones
 app.use(
   session({
-    secret: "techstoresecret2024", // Cambia este valor por una clave segura en producción
+    secret: "contrasena2025", // Cambia este valor por una clave segura en producción
     resave: false,
     saveUninitialized: false,
     cookie: {
-      secure: false, // true solo si usas HTTPS
+      secure: false, // true solo para HTTPS
       maxAge: 1000 * 60 * 60 * 2, // 2 horas de expiración 
     },
   })

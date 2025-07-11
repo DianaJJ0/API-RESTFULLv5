@@ -17,17 +17,22 @@
     <!-- Sección autenticación (usuario logueado o no) -->
     <div class="site-header__auth">
       <% if (usuario) { %>
-        <!-- Usuario autenticado: muestra avatar, nombre y opciones -->
-        <img
-          src="/img/usuario.png"
-          alt="Avatar de <%= usuario.nombreCompleto %>"
-          class="site-header__avatar"
-        />
-        <span class="site-header__username">
-          Hola, <%= usuario.nombreCompleto.split(' ')[0] %>
-        </span>
-        <a href="/perfil" class="btn btn-outline">Mi Perfil</a>
-        <a href="/auth/logout" class="btn btn-danger">Cerrar Sesión</a>
+        <!-- Usuario autenticado: avatar de iniciales y menú desplegable -->
+        <div class="user-menu">
+          <div class="avatar-circle" id="avatarBtn" title="<%= usuario.nombreCompleto %>">
+            <% 
+              // Obtiene iniciales del primer y segundo nombre (o primer apellido si solo hay uno)
+              const nombreParts = usuario.nombreCompleto.trim().split(' ');
+              const iniciales = nombreParts[0].charAt(0).toUpperCase() + (nombreParts[1] ? nombreParts[1].charAt(0).toUpperCase() : '');
+            %>
+            <%= iniciales %>
+          </div>
+          <span class="dropdown-arrow" id="dropdownArrow">&#9662;</span>
+          <div class="dropdown-menu" id="dropdownMenu">
+            <a href="/perfil"><i class="fa fa-user"></i> Mi Perfil</a>
+            <a href="/auth/logout"><i class="fa fa-sign-out"></i> Cerrar Sesión</a>
+          </div>
+        </div>
       <% } else { %>
         <!-- Usuario no autenticado: muestra botones de login y registro -->
         <a href="/login" class="btn btn-outline">Iniciar sesión</a>
@@ -36,3 +41,6 @@
     </div>
   </div>
 </header>
+
+<!-- Enlaza el script para el menú desplegable del usuario -->
+<script src="/js/headerMenu.js"></script>
