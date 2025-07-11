@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+
 const {
     obtenerUsuarios,
     crearUsuario,
@@ -7,18 +8,17 @@ const {
     eliminarUsuario
 } = require('../controllers/usuarios.controller.js');
 
-// --- RUTAS CRUD DE LA API DE USUARIOS ---
-
-// GET /api/usuarios/
+// RUTAS CRUD DE LA API DE USUARIOS
 router.get('/', obtenerUsuarios);
-
-// POST /api/usuarios/
 router.post('/', crearUsuario);
-
-// PUT /api/usuarios/:email
 router.put('/:email', actualizarUsuario);
-
-// DELETE /api/usuarios/:email
 router.delete('/:email', eliminarUsuario);
+
+// --- RUTA PARA OBTENER EL PERFIL DEL USUARIO AUTENTICADO ---
+const { protegerRuta } = require('../middleware/auth.middleware.js');
+const { obtenerPerfil } = require('../controllers/compra.controller.js');
+
+// GET /v2/api/usuarios/perfil
+router.get('/perfil', protegerRuta, obtenerPerfil);
 
 module.exports = router;

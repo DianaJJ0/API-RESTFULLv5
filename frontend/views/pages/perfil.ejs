@@ -5,14 +5,21 @@
     <link rel="stylesheet" href="/css/perfil.css">
 </head>
 <body>
-    
     <div class="site-container">
         <%- include('../partials/header') %>
 
         <main class="content-wrap">
             <section class="profile-container">
                 <header class="profile-header">
-                    <h1>Bienvenido de nuevo, <%= usuario.nombreCompleto.split(' ')[0] %></h1>
+                    <!-- Protegemos el acceso a usuario para evitar errores si es null -->
+                    <h1>
+                        Bienvenido de nuevo,
+                        <% if (usuario && usuario.nombreCompleto) { %>
+                            <%= usuario.nombreCompleto.split(' ')[0] %>
+                        <% } else { %>
+                            Usuario
+                        <% } %>
+                    </h1>
                     <p>Aquí puedes revisar tu información y tu historial de compras.</p>
                 </header>
 
@@ -22,20 +29,44 @@
                         <h2>Tu Información</h2>
                         <div class="info-item">
                             <span class="info-label">Nombre Completo</span>
-                            <span class="info-value"><%= usuario.nombreCompleto %></span>
+                            <span class="info-value">
+                                <% if (usuario && usuario.nombreCompleto) { %>
+                                    <%= usuario.nombreCompleto %>
+                                <% } else { %>
+                                    No disponible
+                                <% } %>
+                            </span>
                         </div>
                         <div class="info-item">
                             <span class="info-label">Correo Electrónico</span>
-                            <span class="info-value"><%= usuario.correo %></span>
+                            <span class="info-value">
+                                <% if (usuario && usuario.correo) { %>
+                                    <%= usuario.correo %>
+                                <% } else { %>
+                                    No disponible
+                                <% } %>
+                            </span>
                         </div>
                         <div class="info-item">
                             <span class="info-label">Miembro desde</span>
-                            <span class="info-value"><%= new Date(usuario.createdAt).toLocaleDateString('es-CO', { year: 'numeric', month: 'long', day: 'numeric' }) %></span>
+                            <span class="info-value">
+                                <% if (usuario && usuario.createdAt) { %>
+                                    <%= new Date(usuario.createdAt).toLocaleDateString('es-CO', { year: 'numeric', month: 'long', day: 'numeric' }) %>
+                                <% } else { %>
+                                    No disponible
+                                <% } %>
+                            </span>
                         </div>
                         <!-- Mostramos si es cliente o no -->
                         <div class="info-item">
                             <span class="info-label">Status</span>
-                            <span class="info-value"><%= cliente ? 'Cliente Verificado' : 'Usuario' %></span>
+                            <span class="info-value">
+                                <% if (cliente) { %>
+                                    Cliente Verificado
+                                <% } else { %>
+                                    Usuario
+                                <% } %>
+                            </span>
                         </div>
                         <a href="#" class="btn btn-outline btn-full">Editar Información</a>
                     </aside>
@@ -43,7 +74,6 @@
                     <!-- Sección principal con el historial de compras -->
                     <section class="purchase-history">
                         <h2>Historial de Compras</h2>
-                        
                         <!-- Verificamos si existe un perfil de cliente y si tiene compras -->
                         <% if (cliente && cliente.historialCompras && cliente.historialCompras.length > 0) { %>
                             <div class="history-table">
@@ -53,19 +83,37 @@
                                     <span>Precio Pagado</span>
                                     <span>Factura</span>
                                 </div>
-                                <!-- Iteramos sobre cliente.historialCompras -->
                                 <% cliente.historialCompras.slice().reverse().forEach(compra => { %>
                                     <% if (compra.producto) { %>
                                         <div class="history-table-row">
                                             <div class="product-cell">
-                                                <img src="/images/<%= compra.producto.referencia %>.jpg" alt="<%= compra.producto.nombre %>" class="product-cell-img">
+                                                <!-- Protegemos acceso a la imagen y nombre del producto -->
+                                                <% if (compra.producto.referencia && compra.producto.nombre) { %>
+                                                    <img src="/img/<%= compra.producto.referencia %>.jpg" alt="<%= compra.producto.nombre %>" class="product-cell-img">
+                                                <% } %>
                                                 <div class="product-cell-info">
-                                                    <span class="product-cell-name"><%= compra.producto.nombre %></span>
-                                                    <span class="product-cell-ref">Ref: <%= compra.producto.referencia %></span>
+                                                    <span class="product-cell-name">
+                                                        <%= compra.producto.nombre ? compra.producto.nombre : "Producto" %>
+                                                    </span>
+                                                    <span class="product-cell-ref">
+                                                        Ref: <%= compra.producto.referencia ? compra.producto.referencia : "N/A" %>
+                                                    </span>
                                                 </div>
                                             </div>
-                                            <span class="date-cell"><%= new Date(compra.fechaCompra).toLocaleDateString('es-CO') %></span>
-                                            <span class="price-cell">$<%= new Intl.NumberFormat('es-CO').format(compra.precioCompra) %></span>
+                                            <span class="date-cell">
+                                                <% if (compra.fechaCompra) { %>
+                                                    <%= new Date(compra.fechaCompra).toLocaleDateString('es-CO') %>
+                                                <% } else { %>
+                                                    N/A
+                                                <% } %>
+                                            </span>
+                                            <span class="price-cell">
+                                                <% if (compra.precioCompra) { %>
+                                                    $<%= new Intl.NumberFormat('es-CO').format(compra.precioCompra) %>
+                                                <% } else { %>
+                                                    N/A
+                                                <% } %>
+                                            </span>
                                             <a href="#" class="btn btn-outline btn-small">Ver</a>
                                         </div>
                                     <% } %>
@@ -77,7 +125,8 @@
                                 <a href="/catalogo" class="btn btn-primary">Explorar catálogo</a>
                             </div>
                         <% } %>
-                        
+
+                        <!-- Mensaje de error si existe -->
                         <% if (error) { %>
                             <div class="alert alert-error"><p><%= error %></p></div>
                         <% } %>
@@ -88,6 +137,5 @@
     </div>
 
     <%- include('../partials/footer') %>
-
 </body>
 </html>

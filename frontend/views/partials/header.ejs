@@ -16,7 +16,7 @@
     
     <!-- Sección autenticación (usuario logueado o no) -->
     <div class="site-header__auth">
-      <% if (usuario) { %>
+      <% if (usuario && usuario.nombreCompleto) { %>
         <!-- Usuario autenticado: avatar de iniciales y menú desplegable -->
         <div class="user-menu">
           <div class="avatar-circle" id="avatarBtn" title="<%= usuario.nombreCompleto %>">
