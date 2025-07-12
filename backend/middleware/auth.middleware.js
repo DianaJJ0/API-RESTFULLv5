@@ -7,6 +7,7 @@ const jwt = require('jsonwebtoken');
 
 const Usuario = require('../models/usuarios.model');
 
+
 // También se define una función para verificar al usuario en cada petición, lo que permite mostrar información del usuario en las vistas sin necesidad de volver a autenticarlo.
 // Además, se utiliza un modelo de usuario para interactuar con la base de datos y obtener  los datos del usuario autenticado.
 
@@ -28,7 +29,7 @@ const checkUser = (req, res, next) => {
             } else {
                 // Si el token es válido, buscamos al usuario y lo hacemos disponible en las vistas
                 const usuario = await Usuario.findById(decodificado.id).select('-password');
-                res.locals.usuario = usuario; // ¡Aquí está la magia!
+                res.locals.usuario = usuario; 
                 next();
             }
         });
@@ -40,9 +41,11 @@ const checkUser = (req, res, next) => {
 };
 
 
-// --- Función para PROTEGER rutas (esta ya la tenías) ---
+// --- Función para PROTEGER rutas  ---
+
+// Esta función verifica si el usuario está autenticado mediante un token JWT
+// Si el token es válido, se permite el acceso a la ruta protegida.
 const protegerRuta = async (req, res, next) => {
-    // ... (el código de esta función no cambia)
     const token = req.cookies.jwt;
 
     if (!token) {

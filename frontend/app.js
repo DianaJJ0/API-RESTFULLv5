@@ -17,13 +17,24 @@ app.set("views", path.join(__dirname, "views"));
 app.use(express.static(path.join(__dirname, "public")));
 
 // --- Middleware para parsear datos de formularios (POST) ---
+// Permite recibir datos de formularios con codificación URL (para datos tipo formulario)
+// Esto es necesario para procesar los datos enviados desde formularios HTML
 app.use(express.urlencoded({ extended: true }));
 
 // --- Middleware para parsear datos en formato JSON  ---
 app.use(express.json());
 
 
+// --- Middleware para manejar sesiones de usuario ---
+
 // 2. Configuración y uso del middleware de sesiones
+
+// Este middleware permite manejar sesiones de usuario en el frontend
+// Las sesiones permiten almacenar datos del usuario entre diferentes peticiones HTTP
+// Aquí se configura la sesión con una clave secreta y opciones de seguridad
+// La cookie de sesión se configura para que sea segura y tenga una duración de 2 horas
+// Esto es útil para mantener al usuario autenticado sin necesidad de enviar el token en cada petición
+// La cookie se puede usar para almacenar el token JWT o cualquier otro dato de sesión necesario
 app.use(
   session({
     secret: "contrasena2025", // Cambia este valor por una clave segura en producción
@@ -37,6 +48,7 @@ app.use(
 );
 
 // --- Importar y usar el router de vistas (frontend/router.js) ---
+
 const viewsRouter = require("./router");
 
 // Este router maneja las rutas del frontend, como el catálogo, login, etc.

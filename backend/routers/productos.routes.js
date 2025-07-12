@@ -1,5 +1,8 @@
 const express = require('express');
 const router = express.Router();
+
+// Importamos el controlador de productos
+// Este controlador maneja la lógica de negocio para productos
 const { 
     obtenerProductos,
     obtenerProducto,

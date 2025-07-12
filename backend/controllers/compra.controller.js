@@ -3,6 +3,13 @@ const Producto = require('../models/productos.model.js');
 const Usuario = require('../models/usuarios.model.js');
 
 // ============ FUNCIÓN PARA PROCESAR UNA COMPRA  ========================
+
+// Esta función maneja la lógica de compra de un producto por parte de un usuario
+// Verifica si el usuario es cliente, crea su perfil si no lo es, y registra la compra en su historial
+// Se asume que el usuario ya está autenticado y su ID está disponible en req.usuario......
+
+// El producto a comprar se pasa como parámetro en la URL (req.params.productoId)
+// El cliente debe enviar datos adicionales como teléfono, dirección, etc. en el cuerpo de la solicitud (req.body)              
 const realizarCompra = async (req, res) => {
     try {
         const usuarioId = req.usuario._id; 
@@ -28,6 +35,8 @@ const realizarCompra = async (req, res) => {
                 });
             }
 
+            // Crear el cliente con los datos extra
+            // Se asocia el cliente al usuario mediante el campo 'usuario'
             cliente = new Cliente({
                 usuario: usuarioId,
                 telefono,
@@ -44,6 +53,8 @@ const realizarCompra = async (req, res) => {
             producto: productoId,
             precioCompra: producto.precio
         });
+        // Guardar el cliente actualizado
+        // Esto actualiza el historial de compras del cliente
         await cliente.save();
 
         // 5. Responder con éxito y el estado actualizado del cliente
@@ -59,6 +70,15 @@ const realizarCompra = async (req, res) => {
 };
 
 // ===================     FUNCIÓN PARA DEVOLVER EL PERFIL DEL USUARIO   ================
+
+
+// Esta función devuelve el perfil del usuario autenticado, incluyendo sus datos y el perfil de cliente si existe
+// Se usa para mostrar la información del usuario y su historial de compras en el frontend
+// Se asume que el usuario ya está autenticado y su ID está disponible en req.usuario
+
+
+// Si el usuario no tiene un perfil de cliente, se devuelve un mensaje indicando que no es cliente
+// Si el usuario tiene un perfil de cliente, se devuelve su información y su historial de compras.                                                                   
 const obtenerPerfil = async (req, res) => {
     try {
         // --- SOPORTE SESIÓN PARA PETICIONES DEL FRONTEND ---
@@ -91,6 +111,8 @@ const obtenerPerfil = async (req, res) => {
     }
 };
 
+
+// Exporta las funciones para que puedan ser usadas en las rutas
 module.exports = {
     realizarCompra,
     obtenerPerfil

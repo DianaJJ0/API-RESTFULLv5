@@ -2,8 +2,9 @@
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
-// Expresión regular sencilla para validar teléfonos (ajusta según tu país si lo deseas)
-const telefonoRegex = /^[0-9]{7,15}$/;
+
+// Asegúrarse de que el teléfono tenga 10 dígitos
+const telefonoRegex = /^[0-9]{10}$/;
 
 // Esquema del modelo Cliente
 const clienteSchema = new Schema({
@@ -47,7 +48,7 @@ const clienteSchema = new Schema({
     // Código postal obligatorio
     codigoPostal: {
         type: String,
-        required: [true, 'El código postal es obligatorio.'],
+        required: [false, 'El código postal es opcional.'],
         trim: true
     },
     // Historial de compras del cliente

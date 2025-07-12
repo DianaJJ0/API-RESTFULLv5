@@ -35,7 +35,7 @@ const ProductoSchema = new Schema({
     },
     publicado: {
         type: Boolean,
-        default: true // Por defecto, un producto nuevo no estará publicado
+        default: true // Por defecto, un producto nuevo estará publicado
     }
 }, {
     timestamps: true

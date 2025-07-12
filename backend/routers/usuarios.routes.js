@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
+// Importamos el controlador de usuarios
 const {
     obtenerUsuarios,
     crearUsuario,

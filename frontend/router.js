@@ -7,8 +7,13 @@ require("dotenv").config();
 // Base URL de la API del backend.
 const API_BASE_URL = process.env.URL_BASE || "http://localhost:9090";
 
+//-------------------------------------------------
 
 // --- Ruta para mostrar el catálogo de productos publicados ---
+
+// Esta ruta obtiene los productos publicados desde el backend y los muestra en la vista del catálogo
+// Se asume que el backend tiene un endpoint que devuelve los productos filtrados por "publicado=true"
+// La ruta GET /catalogo renderiza la vista de catálogo con los productos obtenidos
 router.get("/catalogo", async (req, res) => {
   try {
     // Obtenemos SOLO los productos publicados usando el query param
@@ -33,9 +38,10 @@ router.get("/catalogo", async (req, res) => {
 });
 
 
-/**
- * Ruta GET para mostrar el formulario de inicio de sesión.
- */
+/* Ruta GET para mostrar el formulario de inicio de sesión.*/
+
+// Esta ruta muestra el formulario de inicio de sesión
+// Si el usuario ya está registrado, muestra un mensaje de éxito si se pasó el query param 
 router.get("/login", (req, res) => {
   const registered = req.query.registered === "true";
   res.render("pages/login", {
@@ -46,10 +52,12 @@ router.get("/login", (req, res) => {
   });
 });
 
-/**
+/*
  * Ruta POST para procesar el inicio de sesión.
- * Se guarda el usuario autenticado en la sesión.
- */
+ * Se guarda el usuario autenticado en la sesión.*/
+
+// Esta ruta recibe los datos del formulario de inicio de sesión, valida las credenciales y genera un token JWT
+// Si las credenciales son correctas, envía una respuesta con el token y el usuario 
 router.post("/login", async (req, res) => {
   const { correo, password } = req.body;
   try {
@@ -102,9 +110,10 @@ router.get("/register", (req, res) => {
   res.render("pages/register", { error: null, usuario: req.session && req.session.usuario ? req.session.usuario : null });
 });
 
-/**
- * Ruta POST para procesar el registro de usuario.
- */
+/* Ruta POST para procesar el registro de usuario.*/
+
+// Esta ruta recibe los datos del formulario de registro, valida y crea el usuario
+// Si el registro es exitoso, redirige al usuario a la página de inicio de sesión
 router.post("/register", async (req, res) => {
   // Extraemos los datos del formulario de registro
   const { nombreCompleto, correo, password } = req.body; 
@@ -135,9 +144,10 @@ router.post("/register", async (req, res) => {
   }
 });
 
-/**
- * Ruta GET para mostrar el perfil del usuario.
- */
+/*Ruta GET para mostrar el perfil del usuario.*/
+
+// Esta ruta muestra el perfil del usuario autenticado
+// Se asume que el usuario ya está autenticado y su información está en la sesión
 router.get("/perfil", async (req, res) => {
   try {
     // Si no hay usuario autenticado, redirige a login
@@ -166,9 +176,10 @@ router.get("/perfil", async (req, res) => {
   }
 });
 
-/**
- * Ruta POST para procesar la compra de un producto.
- */
+/* Ruta POST para procesar la compra de un producto.*/
+
+// Esta ruta recibe el ID del producto a comprar y realiza la compra
+// Se asume que el usuario ya está autenticado y su ID está disponible en req.session
 router.post("/comprar/:productoId", async (req, res) => {
   try {
     if (!req.session || !req.session.usuario) {
@@ -184,10 +195,11 @@ router.post("/comprar/:productoId", async (req, res) => {
   }
 });
 
-/**
- * Ruta para cerrar sesión del usuario.
- */
-router.get("/auth/logout", (req, res) => {
+
+/*Ruta para cerrar sesión del usuario*/
+
+// Esta ruta elimina la sesión del usuario y redirige a la página de inicio de sesión
+router.get("/logout", (req, res) => {
   // Destruye la sesión y redirige a login
   req.session.destroy(() => {
     res.redirect("/login");

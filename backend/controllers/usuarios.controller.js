@@ -1,7 +1,11 @@
 const modeloUsuario = require('../models/usuarios.model');
 const bcrypt = require('bcryptjs'); // Importante! Se usa para encriptar las contraseñas.
 
+
 /*GET - Obtener todos los usuarios.*/
+
+// Esta función obtiene todos los usuarios de la base de datos
+// Excluye el campo de la contraseña para no exponerlo en la respuesta
 const obtenerUsuarios = async (req, res) => {
     try {
         // El segundo argumento de find ('-password') excluye el campo de la contraseña de los resultados.
@@ -13,6 +17,9 @@ const obtenerUsuarios = async (req, res) => {
     }
 };
 /*POST - Crear un nuevo usuario (Registro).*/
+
+// Esta función crea un nuevo usuario en la base de datos
+// Asegúrate de que el cuerpo de la solicitud contenga todos los campos necesarios
 const crearUsuario = async (req, res) => {
     try {
         const {nombreCompleto, fechaNacimiento, correo, password, rol } = req.body;
@@ -23,10 +30,17 @@ const crearUsuario = async (req, res) => {
         }
 
         // 2. Encriptar la contraseña
-        const salt = await bcrypt.genSalt(10); // Genera una "sal" para el hash
+        // bcrypt.hash es una función que encripta la contraseña usando un algoritmo de hash seguro
+        // 'salt' es un valor aleatorio que se usa para hacer el hash más seguro
+
+        const salt = await bcrypt.genSalt(10); 
         const passwordEncriptada = await bcrypt.hash(password, salt); // Crea el hash
 
+
         // 3. Crear el usuario con la contraseña encriptada
+
+        // Se usa el modelo 'modeloUsuario' para crear un nuevo usuario en la base de datos
+        // Se guarda el nombre completo, fecha de nacimiento, correo y rol (opcional)                                                                                                                                                                                                                               
         const usuarioGuardado = await modeloUsuario.create({
             nombreCompleto,
             fechaNacimiento,
@@ -36,6 +50,9 @@ const crearUsuario = async (req, res) => {
         });
 
         // 4. Crear una copia del usuario para la respuesta, sin la contraseña
+
+        // Se convierte el usuario guardado a un objeto y se elimina el campo de la contraseña
+        // Esto es importante para no exponer la contraseña en la respuesta al cliente
         const usuarioParaRespuesta = usuarioGuardado.toObject();
         delete usuarioParaRespuesta.password;
 
@@ -51,8 +68,12 @@ const crearUsuario = async (req, res) => {
     }
 };
 
+//-------------------------------------------------
 /*PUT - Actualizar un usuario existente.
  * NOTA: Este endpoint no debería usarse para cambiar la contraseña.*/
+
+// Esta función actualiza un usuario existente en la base de datos
+// Asegúrate de que el cuerpo de la solicitud contenga los campos necesarios
 const actualizarUsuario = async (req, res) => {
     try {
         // Se elimina el campo 'password' del cuerpo de la solicitud para evitar que se actualice aquí.
@@ -76,7 +97,11 @@ const actualizarUsuario = async (req, res) => {
     }
 };
 
+// -------------------------------------------------
 /*DELETE - Eliminar un usuario.*/
+
+// Esta función elimina un usuario de la base de datos usando su correo
+// Si el usuario es encontrado y eliminado, devuelve un mensaje de éxito                                                
 const eliminarUsuario = async (req, res) => { 
     try {
         const usuarioEliminado = await modeloUsuario.findOneAndDelete({ correo: req.params.email });

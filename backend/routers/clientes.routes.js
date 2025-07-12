@@ -1,9 +1,10 @@
 const express = require('express');
 const router = express.Router();
 
+// Importamos el controlador de clientes
 const {
     obtenerClientes,
-    obtenerClientePorUsuario, // Nuevo nombre de la función para buscar por usuario
+    obtenerClientePorUsuario, 
     crearCliente,
     actualizarCliente,
     eliminarCliente

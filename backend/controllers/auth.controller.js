@@ -2,7 +2,16 @@ const Usuario = require('../models/usuarios.model');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs'); 
 
-const maxAge = 3 * 24 * 60 * 60; // 3 días en segundos
+const maxAge = 3 * 24 * 60 * 60; // significa 3 días antes de que el token expire :)
+// --- Crear un token JWT ---
+// Esta función genera un token JWT con el ID del usuario y una clave secreta
+// El token tiene una duración definida por maxAge
+// Si no se define JWT_SECRET en el .env, usa un valor por defecto
+// Esto es útil para autenticar al usuario en futuras solicitudes.
+
+// El token se puede enviar al cliente y guardarse en una cookie o localStorage.
+// El cliente puede enviar este token en el header Authorization para acceder a rutas protegidas
+// El token se verifica en el middleware de autenticación para asegurar que el usuario está autenticado 
 const createToken = (id) => {
     return jwt.sign({ id }, process.env.JWT_SECRET || 'tu_secreto_por_defecto', {
         expiresIn: maxAge
@@ -10,6 +19,13 @@ const createToken = (id) => {
 };
 
 // ===================           FUNCIÓN DE REGISTRO (API)         =======================
+
+
+// --- Procesar el registro de un nuevo usuario (API) ---
+
+// Esta función recibe los datos del formulario de registro, valida y crea un nuevo usuario en la base de datos
+// Utiliza bcrypt para hashear la contraseña antes de guardarla
+// Si el registro es exitoso, envía una respuesta con el usuario creado y un mensaje
 const register_post = async (req, res) => {
     const { nombreCompleto, correo, password } = req.body;
 
@@ -48,6 +64,12 @@ const register_post = async (req, res) => {
 }
 
 // --- Procesar el inicio de sesión (API) ---
+
+
+// Esta función recibe los datos del formulario de inicio de sesión, valida las credenciales y genera un token JWT
+// Si las credenciales son correctas, envía una respuesta con el token y el usuario
+// Si las credenciales son incorrectas, envía un mensaje de error
+// El token se puede guardar en una cookie o localStorage para futuras solicitudes
 const login_post = async (req, res) => { 
     const { correo, password } = req.body; 
 
@@ -73,7 +95,12 @@ const login_post = async (req, res) => {
     }
 }
 
+
 // --- Cerrar sesión (API) ---
+
+
+// Esta función elimina el token JWT de la cookie del cliente, cerrando la sesión del usuario
+// Envía una respuesta confirmando que la sesión se cerró correctamente
 const logout_get = (req, res) => {
     res.cookie('jwt', '', { maxAge: 1 });
     res.status(200).json({ mensaje: "Sesión cerrada correctamente." });

@@ -10,6 +10,7 @@ const dbConnection = async () => {
         console.log('Conexión exitosa a la base de datos');
 
     } catch (error) {
+        // Si hay un error, lo mostramos en la consola
         console.error('Error de conexión a la base de datos:', error);
         throw new Error('Error al iniciar la base de datos. Ver logs.');
     }

@@ -6,7 +6,15 @@ const modeloCliente = require('../models/clientes.model');
  */
 const obtenerClientes = async (req, res) => {
     try {
-        // Popula los datos básicos del usuario asociado a cada cliente
+        // Busca todos los clientes y popula los datos del usuario asociado
+        // Esto permite que cada cliente tenga acceso a los datos del usuario (nombre, correo, rol)
+        // Se usa populate para incluir los datos del usuario en la respuesta.
+
+        
+        // 'modeloCliente' es el modelo de Mongoose para clientes
+        // 'usuario' es el campo que referencia al modelo Usuario
+        // 'nombreCompleto correo rol' son los campos que queremos mostrar del usuario
+        // Esto es útil para mostrar información del cliente junto con su usuario
         const listaClientes = await modeloCliente.find().populate('usuario', 'nombreCompleto correo rol');
         res.status(200).json(listaClientes);
     } catch (error) {
@@ -19,6 +27,10 @@ const obtenerClientes = async (req, res) => {
  * GET - Obtener un cliente específico por el id del usuario.
  * Ejemplo de uso: /v2/api/clientes/usuario/:usuarioId
  */
+
+
+// Esta función busca un cliente usando el id del usuario y devuelve sus datos
+// Utiliza populate para incluir los datos del usuario asociado al cliente
 const obtenerClientePorUsuario = async (req, res) => {
     try {
         const { usuarioId } = req.params;
@@ -40,6 +52,10 @@ const obtenerClientePorUsuario = async (req, res) => {
  * POST - Crear un nuevo cliente.
  * El body debe incluir: usuario (id), telefono, direccion, fechaNacimiento, ciudad, codigoPostal, etc.
  */
+
+// Esta función crea un nuevo cliente en la base de datos
+// Asegúrate de que el campo 'usuario' esté presente en el cuerpo de la solicitud
+// El usuario debe ser un id válido de un usuario existente
 const crearCliente = async (req, res) => {
     try {
         // Asegúrate que el campo usuario esté presente
@@ -59,6 +75,12 @@ const crearCliente = async (req, res) => {
  * PUT - Actualizar la información de un cliente existente por el id de usuario.
  * Ejemplo de uso: /v2/api/clientes/usuario/:usuarioId
  */
+
+
+// Esta función actualiza los datos de un cliente existente
+// Utiliza el id del usuario para encontrar el cliente y actualizar sus datos
+// Devuelve el cliente actualizado o un mensaje de error si no se encuentra
+// Se usa 'runValidators: true' para validar los datos antes de guardar
 const actualizarCliente = async (req, res) => {
     try {
         const { usuarioId } = req.params;
@@ -85,6 +107,10 @@ const actualizarCliente = async (req, res) => {
  * DELETE - Eliminar un cliente de la base de datos por el id de usuario.
  * Ejemplo de uso: /v2/api/clientes/usuario/:usuarioId
  */
+
+// Esta función elimina un cliente de la base de datos usando el id del usuario
+// Si el cliente es encontrado y eliminado, devuelve un mensaje de éxito            
+// Si no se encuentra el cliente, devuelve un mensaje de error
 const eliminarCliente = async (req, res) => {
     try {
         const { usuarioId } = req.params;
@@ -101,6 +127,9 @@ const eliminarCliente = async (req, res) => {
     }
 };
 
+
+// Exporta las funciones para que puedan ser usadas en las rutas
+// Estas funciones serán llamadas por los routers para manejar las solicitudes HTTP
 module.exports = {
     obtenerClientes,
     obtenerClientePorUsuario,
