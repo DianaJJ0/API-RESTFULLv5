@@ -6,7 +6,7 @@ const ProductoSchema = new Schema({
         type: String,
         required: [true, 'La referencia es obligatoria'],
         unique: true, // No puede haber dos productos con la misma referencia
-        trim: true    // Quita los espacios en blanco al principio y al final
+        trim: true   
     },
     nombre: {
         type: String,
